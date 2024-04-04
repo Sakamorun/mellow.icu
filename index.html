@@ -3,20 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href='https://fonts.googleapis.com/css?family=Bellota' rel='stylesheet'>
-<style>
-body {
-    font-family: 'Bellota';font-size: 22px;
-}
-</style>
-</head>
-<body>
+<link href='https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap' rel='stylesheet'>
 <title>☆</title>
 <style>
     body {
         background-color: black;
         color: white;
-        font-family: 'Bellota', Tahoma, Geneva, Verdana, sans-serif;
+        font-family: 'Lato';
         display: flex;
         justify-content: center;
         align-items: center;
@@ -25,24 +18,58 @@ body {
     }
     #text-container {
         text-align: center;
-        cursor: pointer;
-        transition: opacity 0.5s ease-in-out;
         font-size: 24px;
+    }
+    #text-content {
+        transition: opacity 0.5s ease-in-out;
+    }
+    #text-container a {
+        text-decoration: underline;
+        color: white;
     }
 </style>
 </head>
 <body>
-<div id="text-container" onclick="changeText()">☆</div>
+<div id="text-container"><span id="text-content">☆</span></div>
 
 <script>
+var originalText = "☆";
+var texts = ["<a href='https://www.youtube.com/channel/UCjG4AH3UPCmqSlOB6IKfxzw/'>☆ youtube ☆</a>", "<a href='https://www.instagram.com/unhxly.kanako'>☆ instagram ☆</a>", "<a href='https://open.spotify.com/artist/4NvQfQfheMhDU5rdFUAco3'>☆ spotify ☆</a>", "☆ contact: saka@mellow.icu ☆"];
+var currentIndex = -1;
+var clickable = true;
+
 function changeText() {
-    var textContainer = document.getElementById("text-container");
+    var textContainer = document.getElementById("text-content");
     textContainer.style.opacity = "0";
     setTimeout(function() {
-        textContainer.textContent = "☆contact: saka@mellow.icu☆";
+        currentIndex = (currentIndex + 1) % texts.length;
+        textContainer.innerHTML = texts[currentIndex];
         textContainer.style.opacity = "1";
+        if (currentIndex === texts.length - 1) {
+            setTimeout(function() {
+                textContainer.style.opacity = "0";
+                setTimeout(function() {
+                    currentIndex = -1;
+                    textContainer.innerHTML = originalText;
+                    textContainer.style.opacity = "1";
+                    clickable = true;
+                }, 500);
+            }, 2000);
+        }
+        else {
+            setTimeout(changeText, 2000);
+        }
     }, 500);
 }
+
+function handleClick() {
+    if (clickable) {
+        clickable = false;
+        changeText();
+    }
+}
+
+document.getElementById("text-container").addEventListener("click", handleClick);
 </script>
 
 </body>
